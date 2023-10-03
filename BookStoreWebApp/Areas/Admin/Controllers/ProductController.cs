@@ -22,11 +22,9 @@ namespace BookStoreWebApp.Areas.Admin.Controllers
 			return View(objProductList);
 		}
 
-		public IActionResult Create()
+		public IActionResult Upsert(int? id) // Upsert --> Upadte & Insert
 		{
 
-			//ViewBag.CategoryList = CategoryList;
-			//ViewData["CategoryList"] = CategoryList;
 			ProductVM productVM = new ProductVM()
 			{
 
@@ -40,13 +38,28 @@ namespace BookStoreWebApp.Areas.Admin.Controllers
 				Product = new Product()
 
 			};	
-		
 
-			return View(productVM);
+			if(id == null || id == 0)
+			{
+				//create
+				return View(productVM);
+
+
+			}
+
+			else
+			{
+				//update
+				productVM.Product = _unitOfWork.Product.Get(u=>u.Id==id);
+				return View(productVM);
+
+			}
+
+
 		}
 
 		[HttpPost]
-		public IActionResult Create(ProductVM productVM)
+		public IActionResult Upsert(ProductVM productVM,IFormFile? file)
 		{
 
 			
@@ -75,44 +88,9 @@ namespace BookStoreWebApp.Areas.Admin.Controllers
 			
 		}
 
-		public IActionResult Edit(int? id) // the var name in the function should be the same -> in (asp-route-the same var name) 
-		{
-			if (id == null || id == 0)
-			{
+		
 
-				return NotFound();
-			}
-
-			Product? ProductFromDb = _unitOfWork.Product.Get(u => u.Id == id); // Find only work on PK
-																				  //Product? ProductFromDb = _ProductRepo.Categories.FirstOrDefault(c => c.Id == id);
-																				  //Product? ProductFromDb = _ProductRepo.Categories.Where(u=>u.Id == id).FirstOrDefault();	
-			if (ProductFromDb == null)
-			{
-				return NotFound();
-			}
-
-			return View(ProductFromDb);
-		}
-
-
-		[HttpPost]
-		public IActionResult Edit(Product obj)
-		{
-
-
-
-			if (ModelState.IsValid)
-			{
-				_unitOfWork.Product.Update(obj);
-				_unitOfWork.Save();
-				TempData["success"] = "Product Updated Successfully";
-
-				return RedirectToAction("Index");
-
-			}
-			return View();
-		}
-
+		
 
 		public IActionResult Delete(int? id)
 		{
