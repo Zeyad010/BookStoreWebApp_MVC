@@ -25,7 +25,7 @@ namespace BS.Models.Models
 		[ValidateNever]
 		public ApplicationUser ApplicationUser { get; set; }
 
-		[NotMapped]
+		[NotMapped] // will not create this col in DB
 		public double Price { get; set; }
 	}
 }

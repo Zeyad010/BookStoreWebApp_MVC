@@ -30,6 +30,8 @@
                             <a class="nav-link " asp-area="Customer"  asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
 
+
+
                        @*  @if (User.IsInRole(SD.Role_Admin))
                         { *@
                             <li class="nav-item dropdown">
@@ -56,6 +58,13 @@
 
                         @* } *@
 
+
+                        <li class="nav-item">
+                            <a class="nav-link " asp-area="Customer" asp-controller="Cart" asp-action="Index">
+                                <i class="bi bi-cart"></i> &nbsp; 
+                            </a>
+                        </li>
+
                        
 
                        
@@ -76,7 +85,7 @@
     </div>
 
     <footer class="border-top footer bg-primary text-white">
-        <div class="container text-center">
+        <div class="container text-center ">
              BookStoreWebApp <i class="bi bi-book"></i> Made By Zeyad Elmahdy
         </div>
     </footer>
