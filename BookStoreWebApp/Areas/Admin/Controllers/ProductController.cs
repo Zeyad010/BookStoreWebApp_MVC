@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace BookStoreWebApp.Areas.Admin.Controllers
 {
 	[Area("Admin")]
-    //[Authorize(Roles = SD.Role_Admin)]
+    [Authorize(Roles = SD.Role_Admin)]
 
     public class ProductController : Controller
 	{

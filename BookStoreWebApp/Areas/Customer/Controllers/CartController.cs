@@ -235,7 +235,7 @@ namespace BSWeb.Areas.Customer.Controllers
                 _unitOfWork.ShoppingCart.Update(cartFromDb);
             }
 
-            _unitOfWork.Save();
+			_unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
 
