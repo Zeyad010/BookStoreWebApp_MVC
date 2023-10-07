@@ -47,8 +47,8 @@ namespace BS.Models.Models
 		[ForeignKey("CategoryId")]
 		[ValidateNever]
         public Category Category { get; set; }
-		
-
+		[ValidateNever]
+		public List<ProductImage> ProductImages { get; set; }
 
 		
     }

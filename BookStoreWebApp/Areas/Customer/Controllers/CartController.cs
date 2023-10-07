@@ -1,6 +1,9 @@
-﻿
-using BS.DataAccess.Repository.IRepository;
+﻿using BS.DataAccess.Repository.IRepository;
 using BS.Models.Models;
+using BS.Models.ViewModels;
+using BS.Utility;
+using BS.DataAccess.Repository.IRepository;
+using BS.Models;
 using BS.Models.ViewModels;
 using BS.Utility;
 using Microsoft.AspNetCore.Authorization;
@@ -8,9 +11,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Stripe.Checkout;
 using System.Security.Claims;
-using static System.Net.WebRequestMethods;
 
-namespace BSWeb.Areas.Customer.Controllers
+namespace BookStoreWebApp.Areas.Customer.Controllers
 {
 
     [Area("customer")]
@@ -41,17 +43,19 @@ namespace BSWeb.Areas.Customer.Controllers
                 includeProperties: "Product"),
                 OrderHeader = new()
             };
-            
+
+            IEnumerable<ProductImage> productImages = _unitOfWork.ProductImage.GetAll();
 
             foreach (var cart in ShoppingCartVM.ShoppingCartList)
             {
+                cart.Product.ProductImages = productImages.Where(u => u.ProductId == cart.Product.Id).ToList();
                 cart.Price = GetPriceBasedOnQuantity(cart);
                 ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price * cart.Count);
             }
 
             return View(ShoppingCartVM);
         }
-        
+
         public IActionResult Summary()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
@@ -82,7 +86,7 @@ namespace BSWeb.Areas.Customer.Controllers
             }
             return View(ShoppingCartVM);
         }
-        
+
         [HttpPost]
         [ActionName("Summary")]
         public IActionResult SummaryPOST()
@@ -195,9 +199,11 @@ namespace BSWeb.Areas.Customer.Controllers
                     _unitOfWork.Save();
                 }
                 HttpContext.Session.Clear();
+
             }
 
-            
+            _emailSender.SendEmailAsync(orderHeader.ApplicationUser.Email, "New Order - Bulky Book",
+                $"<p>New Order Created - {orderHeader.Id}</p>");
 
             List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCart
                 .GetAll(u => u.ApplicationUserId == orderHeader.ApplicationUserId).ToList();
@@ -235,7 +241,7 @@ namespace BSWeb.Areas.Customer.Controllers
                 _unitOfWork.ShoppingCart.Update(cartFromDb);
             }
 
-			_unitOfWork.Save();
+            _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
 
