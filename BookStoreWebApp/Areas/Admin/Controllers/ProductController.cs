@@ -79,32 +79,32 @@ namespace BookStoreWebApp.Areas.Admin.Controllers
 					string fileName=Guid.NewGuid().ToString()+Path.GetExtension(file.FileName);	
 					string productPath=Path.Combine(wwwRootPath, @"images\product");
 
-					if (!string.IsNullOrEmpty(productVM.Product.ImageUrl)) 
-					{
+					//	if (!string.IsNullOrEmpty(productVM.Product.ImageUrl)) 
+					//	{
 
-						//delete the old image
+					//		//delete the old image
 
-						var oldImagePath=Path.Combine(wwwRootPath, productVM.Product.ImageUrl.TrimStart('\\'));
+					//		var oldImagePath=Path.Combine(wwwRootPath, productVM.Product.ImageUrl.TrimStart('\\'));
 
 
-						if (System.IO.File.Exists(oldImagePath)) 
-						{
-							System.IO.File.Delete(oldImagePath);	
-						
-						
-						}
-					  
-					}
-					
-					using(var fileStream = new FileStream(Path.Combine(productPath, fileName),FileMode.Create))
-					{
-						file.CopyTo(fileStream);
-					}
+					//		if (System.IO.File.Exists(oldImagePath)) 
+					//		{
+					//			System.IO.File.Delete(oldImagePath);	
 
-					productVM.Product.ImageUrl = @"\images\product\" + fileName;
+
+					//		}
+
+					//	}
+
+					//	using(var fileStream = new FileStream(Path.Combine(productPath, fileName),FileMode.Create))
+					//	{
+					//		file.CopyTo(fileStream);
+					//	}
+
+					//	productVM.Product.ImageUrl = @"\images\product\" + fileName;
 				}
 
-				if(productVM.Product.Id==0)
+				if (productVM.Product.Id==0)
 				{
 					_unitOfWork.Product.Add(productVM.Product);
 

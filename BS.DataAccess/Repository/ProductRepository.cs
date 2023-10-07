@@ -36,13 +36,13 @@ namespace BS.DataAccess.Repository
 				objFromDb.Description= obj.Description;
 				objFromDb.CategoryId= obj.CategoryId;
 				objFromDb.Author= obj.Author;
-				if(obj.ImageUrl!=null) 
-				{
-				 objFromDb.ImageUrl= obj.ImageUrl;	
+				//if(obj.ImageUrl!=null) 
+				//{
+				// objFromDb.ImageUrl= obj.ImageUrl;	
 				
 				
 				
-				}
+				//}
 				
 
 			
