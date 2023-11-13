@@ -72,6 +72,8 @@ StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey"
 
 app.UseRouting();
 
+// Password :Admin123*
+
 //Must add before aUseAuthorization
 app.UseAuthentication();
 
